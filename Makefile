@@ -9,11 +9,12 @@ STM32_LIB=libraries/STM32F10x_StdPeriph_Driver
 
 all: main.bin
 
-main.bin: main.c
+main.bin: main.c hw2_a.h
 	$(CROSS_COMPILE)gcc \
 		-DUSE_STDPERIPH_DRIVER \
 		-Wl,-Tmain.ld -nostartfiles \
-		-I. -Ilibraries/CMSIS/CM3/CoreSupport \
+		-I. \
+		-Ilibraries/CMSIS/CM3/CoreSupport \
 		-Ilibraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x \
 		-Ilibraries/STM32F10x_StdPeriph_Driver/inc \
 		-fno-common -O0 \
@@ -21,14 +22,15 @@ main.bin: main.c
 		-mcpu=cortex-m3 -mthumb \
 		-o main.elf \
 		\
-$(CMSIS_LIB)/CoreSupport/core_cm3.c \
-$(CMSIS_LIB)/DeviceSupport/$(VENDOR)/$(PLAT)/system_stm32f10x.c \
-$(CMSIS_LIB)/DeviceSupport/$(VENDOR)/$(PLAT)/startup/gcc_ride7/startup_stm32f10x_md.s \
-$(STM32_LIB)/src/stm32f10x_rcc.c \
-$(STM32_LIB)/src/stm32f10x_gpio.c \
-$(STM32_LIB)/src/stm32f10x_usart.c \
-\
-		main.c
+		$(CMSIS_LIB)/CoreSupport/core_cm3.c \
+		$(CMSIS_LIB)/DeviceSupport/$(VENDOR)/$(PLAT)/system_stm32f10x.c \
+		$(CMSIS_LIB)/DeviceSupport/$(VENDOR)/$(PLAT)/startup/gcc_ride7/startup_stm32f10x_md.s \
+		$(STM32_LIB)/src/stm32f10x_rcc.c \
+		$(STM32_LIB)/src/stm32f10x_gpio.c \
+		$(STM32_LIB)/src/stm32f10x_usart.c \
+		\
+		main.c\
+		hw2_a.c
 	$(CROSS_COMPILE)objcopy -Obinary main.elf main.bin
 	$(CROSS_COMPILE)objdump -S main.elf > main.list
 
