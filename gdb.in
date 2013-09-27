@@ -2,8 +2,9 @@ file main.elf
 target remote :3333
 set $osp = $sp
 set $sp = $sp - 16
+set logging on
+
 b main.c:4
-c
 call USART2_Init()
 c
 call ShowString()
